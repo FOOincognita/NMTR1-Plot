@@ -61,12 +61,14 @@ def setup():
             sorted by name, then sends that data to parseCSV, which 
             grabs only columns B, D, & F, & returns a list of those 
             data points, & the list of names to be used in plotting.
-        2) Line 2 below is setting each variable to the correct column. 
+        2) Line 2 below is setting each variable to the correct column
+            by splitting the list of 3 data point lists into 3 seperate
+            lists.
             - before = col B, during = col D, after = col F
     Returns:
-        before (list[float]): data points from column B
-        during (list[float]): data points from column D
-        after (list[float]): data points from column F
+        before (list[float]): list of floats from column B
+        during (list[float]): list of floats from column D
+        after (list[float]): list of floats from column F
         names (list[str]): list of names in CSV file
     """
     dataPts, names = parseCSV() # 1
