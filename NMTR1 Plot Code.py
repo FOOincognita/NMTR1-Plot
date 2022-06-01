@@ -15,31 +15,32 @@ with open(FILE_NAME, 'r') as f:
     """ Reads raw CSV data """
     data = list(csv.reader(f))
 
-# Stores CSV data in dictionary called "people" 
-#   EX: people = {"name":[0.0,2.1,...], "name2":[1.2,1.2,...], ...}
-# For each relevant row in CSV, store each person's B-F column
-#   using their name as a key (B-F is indexable by name)
+""" 
+    For each relevant CSV row, store each person's B-F column
+    using their name as a key in "people" dictionary
+"""
 people = {}
 for row in data[1:]:
     people[row[0]] = [conv(i) for i in row[1:6]]
     
 #################### PARSING THE CSV ####################
-names = list(people.keys()) # list of all names from column A
+names = list(people.keys()) # list of all names (column A)
 dataPts = []
 B = 0
 D = 2
 F = 4
-# For each name, grab column B, D, & F
+
+""" For each name, store column B, D, & F in "dataPts" """
 for name in names:
     dat = people.get(name)
     dataPts.append([dat[B], dat[D], dat[F]])
     
-# Splits dataPts into 3 seperate lists (sorted by name)
+""" Splits dataPts into 3 seperate lists (sorted by name) """
 before, during, after = map(list, zip(*dataPts))
 
 #################### PLOTTING ####################
 
-# Adjust Plot Parameters Here
+""" Adjust Plot Parameters Here """
 FIG_WIDTH = 20 # Width of Diagram
 FIG_HEIGHT = 10 # Height of Diagram
 BAR_WIDTH = 0.30
