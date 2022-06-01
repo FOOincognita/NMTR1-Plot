@@ -6,40 +6,36 @@ import csv
 FILE_NAME = "NMTR1.csv"
 
 #################### HELPER FUNCTION ####################
-def processData(pt):
+def conv(pt):
     """ Converts each datapoint from str to 2-decimal float """
     return round(float('0' if pt == "n/a" else pt), 2)
 
 #################### READING/PROCESSING THE CSV ####################
-
 with open(FILE_NAME, 'r') as f:
     """ Reads raw CSV data """
     data = list(csv.reader(f))
 
 # Stores CSV data in dictionary called "people" 
-#   - EXAMPLE: {"name":[0.0,2.1,...], "name2":[1.2,1.2,...]}
-# data[1:] ignores header line; only parses relevant data
-# person[0] is each person's name
-# [dat(i) for i in person[1:]] is each person's excel data (B-N)
+#   EX: people = {"name":[0.0,2.1,...], "name2":[1.2,1.2,...], ...}
+# For each relevant row in CSV, store each person's B-F column
+#   using their name as a key (B-F is indexable by name)
 people = {}
-for person in data[1:]:
-    people[person[0]] = [processData(i) for i in person[1:]]
+for row in data[1:]:
+    people[row[0]] = [conv(i) for i in row[1:6]]
     
 #################### PARSING THE CSV ####################
-names = list(people.keys()) # All names from Column A
-before = []
-during = []
-after = []
+names = list(people.keys()) # list of all names from column A
+dataPts = []
 B = 0
 D = 2
 F = 4
-
-# Parses CSV data from columns B, D, & F to seperate list
+# For each name, grab column B, D, & F
 for name in names:
-    person_data = people.get(name)
-    before.append(person_data[B])
-    during.append(person_data[D])
-    after.append(person_data[F])
+    dat = people.get(name)
+    dataPts.append([dat[B], dat[D], dat[F]])
+    
+# Splits dataPts into 3 seperate lists (sorted by name)
+before, during, after = map(list, zip(*dataPts))
 
 #################### PLOTTING ####################
 
